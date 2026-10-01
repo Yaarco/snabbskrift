@@ -42,7 +42,11 @@ body::after {
 }
 .shell { width: 100%; margin: 0; }
 .corner-nav { position: fixed; top: 28px; left: 38px; right: 38px; z-index: 3; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
+.brand-language { display: flex; align-items: center; gap: 16px; pointer-events: auto; }
 .orbit-name { color: var(--ink); font-weight: 700; letter-spacing: -.04em; }
+.language-picker select { padding: 2px 20px 2px 0; border: 0; color: var(--muted); background: transparent; font: 10px "Space Mono", monospace; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+.language-picker select:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .nav-actions { display: flex; gap: 10px; pointer-events: auto; }
 .cheat-button { padding: 0; border: 0; color: var(--dim); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
 .cheat-button:hover { color: var(--wrong); }

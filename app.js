@@ -1,13 +1,23 @@
 const CHEAT_ENABLED = true;
 
-const quotes = [
-	"Good design is as little design as possible, leaving room for the thing that truly matters.",
-	"The future belongs to those who believe in the beauty of their small, consistent efforts.",
-	"In the middle of difficulty lies opportunity, waiting quietly for a different point of view.",
-	"A clear mind does not arrive all at once; it is built one patient question at a time.",
-	"The best journeys change their shape while you are moving, so leave a little room to wander.",
-	"Make something that feels inevitable in hindsight, but surprising the moment it arrives."
-];
+const fallbackQuotes = {
+	en: [
+		"Good design is as little design as possible, leaving room for the thing that truly matters.",
+		"The future belongs to those who believe in the beauty of their small, consistent efforts.",
+		"In the middle of difficulty lies opportunity, waiting quietly for a different point of view.",
+		"A clear mind does not arrive all at once; it is built one patient question at a time.",
+		"The best journeys change their shape while you are moving, so leave a little room to wander.",
+		"Make something that feels inevitable in hindsight, but surprising the moment it arrives."
+	],
+	sv: [
+		"God design är så lite design som möjligt och lämnar plats åt det som verkligen betyder något.",
+		"Framtiden tillhör dem som tror på skönheten i sina små, konsekventa ansträngningar.",
+		"Mitt i svårigheten finns en möjlighet som väntar på ett nytt perspektiv.",
+		"Ett klart sinne kommer inte på en gång utan byggs av en tålmodig fråga i taget.",
+		"De bästa resorna ändrar form medan du rör dig, så lämna plats för att gå vilse.",
+		"Skapa något som känns självklart i efterhand men överraskande när det anländer."
+	]
+};
 
 const canvas = document.querySelector('#orbit');
 const ctx = canvas.getContext('2d');
@@ -26,6 +36,7 @@ const finalWpm = document.querySelector('#final-wpm');
 const mistakeFlash = document.querySelector('#mistake-flash');
 const cheatButton = document.querySelector('#cheat-button');
 const difficultyList = document.querySelector('#difficulty-list');
+const languageSelect = document.querySelector('#language-select');
 const difficultyStorageKey = 'orbit-type-completed-difficulties';
 
 let quote = '';
@@ -48,6 +59,9 @@ let audioContext = null;
 let sunDrain = .00005;
 let difficulty = 1;
 let cheatActive = false;
+let language = 'en';
+let quotes = fallbackQuotes.en;
+const quoteSets = { en: null, sv: null };
 let running = true;
 let roundComplete = false;
 let completeTimer = 0;
@@ -111,6 +125,23 @@ function resize() {
 		{ length: Math.min(180, Math.floor(width * height / 9000)) },
 		() => ({ x: Math.random() * width, y: Math.random() * height, r: Math.random() * 1.3, phase: Math.random() * 7 })
 	);
+}
+
+async function loadLanguage(nextLanguage) {
+	language = nextLanguage === 'sv' ? 'sv' : 'en';
+	if (!quoteSets[language]) {
+		try {
+			const response = await fetch(`${language}.json`, { cache: 'no-store' });
+			const data = await response.json();
+			if (!Array.isArray(data) || data.length !== 100 || data.some(quote => typeof quote !== 'string')) throw new Error('Invalid quote file');
+			quoteSets[language] = data;
+		} catch {
+			quoteSets[language] = fallbackQuotes[language];
+		}
+	}
+	quotes = quoteSets[language];
+	languageSelect.value = language;
+	restartGame();
 }
 
 function pickQuote() {
@@ -410,6 +441,7 @@ input.addEventListener('input', () => {
 document.addEventListener('click', () => input.focus());
 restart.addEventListener('click', restartGame);
 nextLevel.addEventListener('click', startNextLevel);
+languageSelect.addEventListener('change', () => loadLanguage(languageSelect.value));
 cheatButton.hidden = !CHEAT_ENABLED;
 cheatButton.addEventListener('click', event => {
 	event.stopPropagation();
@@ -419,7 +451,5 @@ cheatButton.addEventListener('click', event => {
 });
 window.addEventListener('resize', resize);
 resize();
-newRound();
 renderDifficulties();
-startAnimation();
-input.focus();
+loadLanguage('en');
