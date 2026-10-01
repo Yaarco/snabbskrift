@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Orbit Type</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+	<script src="app.js" defer></script>
+</head>
+<body>
+	<div class="shell">
+		<header class="corner-nav">
+			<span class="orbit-name">orbit</span>
+			<div class="nav-actions">
+				<button class="cheat-button" id="cheat-button" type="button">Cheat</button>
+			</div>
+		</header>
+		<main>
+			<section class="intro" aria-labelledby="title">
+				<div>
+					<p class="eyebrow">Three rounds / one orbit</p>
+					<h1 id="title">Put every word<br>in motion.</h1>
+				</div>
+				<div class="stats" aria-label="Game statistics">
+					<div><span class="stat-value" id="wpm">--</span><span class="stat-label">WPM</span></div>
+					<div><span class="stat-value" id="accuracy">100%</span><span class="stat-label">Accuracy</span></div>
+				</div>
+			</section>
+			<section class="arena" aria-label="Typing arena">
+				<canvas id="orbit" aria-label="Animated gravitational orbit"></canvas>
+				<div class="mistake-flash" id="mistake-flash" aria-hidden="true"></div>
+				<span class="orbit-label" id="gravity-readout" aria-hidden="true">0.62</span>
+				<div class="quote-card">
+					<strong id="round-label">Round 01 / 03</strong>
+					<p class="quote" id="quote" aria-live="polite"></p>
+					<span id="status" role="status">Start typing to launch the field</span>
+				</div>
+				<input class="type-input" id="type-input" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Type the quote">
+				<div class="progress" id="progress"></div>
+				<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="result-title" aria-describedby="result-copy" aria-hidden="true" tabindex="-1">
+					<div class="modal-inner"><h2 id="result-title">Orbit complete.</h2><p id="result-copy">Three rounds, perfectly placed.</p><p class="wpm-result">WPM <strong id="final-wpm">0</strong></p><button id="restart" type="button" tabindex="-1">Run it again</button><button id="next-level" type="button" tabindex="-1" hidden>Next level</button></div>
+				</div>
+			</section>
+			<div class="footer">
+				<div class="rounds" id="rounds" role="group" aria-label="Round progress"><span class="round-dot active" aria-hidden="true"></span><span class="round-dot" aria-hidden="true"></span><span class="round-dot" aria-hidden="true"></span></div>
+				<aside class="difficulty" aria-labelledby="difficulty-title">
+					<span id="difficulty-title">Difficulty</span>
+					<ol class="difficulty-list" id="difficulty-list"></ol>
+				</aside>
+			</div>
+		</main>
+	</div>
+</body>
+</html>
